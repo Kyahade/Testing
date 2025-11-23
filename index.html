@@ -69,7 +69,7 @@
     box-shadow: 0 12px 30px rgba(0,0,0,0.15);
     overflow-y: auto;
     box-sizing: border-box;
-    text-align: left;
+    text-align: center;
   }
 
   #messageText {
@@ -77,6 +77,13 @@
     line-height: 1.7;
     color: #444;
     white-space: normal;
+    margin-bottom: 20px;
+  }
+
+  #dogPhoto {
+    max-width: 100%;
+    border-radius: 18px;
+    display: none;
   }
 
   @media (max-width: 600px) {
@@ -104,8 +111,9 @@
 <div id="overlay">
   <div id="messageBox">
     <div id="messageText"></div>
+    <img id="dogPhoto" src="https://images.pexels.com/photos/16191635/pexels-photo-16191635.jpeg" alt="Cute Dog">
     <div class="btn-group">
-      <button id="yesBtn" onclick="sayYes()">Yes</button>
+      <button id="yesBtn" onclick="showDog()">Yes</button>
       <button id="noBtn" onclick="sayNo()">No</button>
     </div>
   </div>
@@ -122,11 +130,13 @@ I want to know every part of you—the laughter you hide, the dreams you whisper
 
 If you say yes, I promise to give you everything I have. I’ll take the risk, I’ll give my all, and I’ll cherish every piece of you. Someday, I hope I can be your boyfriend… and if the world lets me, your husband. I want to give you the world, not because I have to, but because loving you makes me want to give everything back to you.
 
+Just like from the movie 50 First Dates, “Being with you is the only way I could have a full and happy life.” — that’s how important you are to me.
+
 And baby… I don’t want to be a hero. Heroes save the world. I want to be a villain—because I would choose saving *you* over saving the entire world.
 
 Because you, and only you, are worth every risk, every heartbeat, every moment I have.
 
-— [Your Name]`;
+— Darryl`;
 
 function typeWriterEffect(text, elementId, callback, speed=27){
   let i = 0;
@@ -144,35 +154,33 @@ function typeWriterEffect(text, elementId, callback, speed=27){
   type();
 }
 
-// Step 1: Start message
 function startMessage(){
   document.getElementById("overlay").classList.add("show");
   document.getElementById("startBtn").style.display = "none";
   typeWriterEffect("Here… read this carefully:", "messageText", ()=>{
-    // After short pause, show long message
     setTimeout(()=>{ typeWriterEffect(longMessage,"messageText", showChoice); }, 500);
   });
 }
 
-// Step 2: Show YES/NO buttons
 function showChoice(){
   document.getElementById("yesBtn").style.display = "inline-block";
   document.getElementById("noBtn").style.display = "inline-block";
 }
 
-// Step 3: YES
-function sayYes(){
-  document.getElementById("messageText").innerHTML = "";
-  typeWriterEffect(longMessage,"messageText");
+function showDog(){
+  // Hide text and buttons
+  document.getElementById("messageText").style.display = "none";
+  document.getElementById("yesBtn").style.display = "none";
+  document.getElementById("noBtn").style.display = "none";
+  // Show dog photo
+  document.getElementById("dogPhoto").style.display = "block";
 }
 
-// Step 4: NO
 function sayNo(){
   const box = document.getElementById("messageBox");
   box.innerHTML = `<h1>No worries ❤️</h1>
                    <p style="color:#555; font-size:17px; line-height:1.6;">
-                     I’ll still love you as much as I can.<br><br>
-                     Closing in 5 seconds...
+                     I'll wait for you and will love you padin bebe.<br><br>
                    </p>`;
   setTimeout(()=>{document.body.style.opacity="0";},5000);
 }
