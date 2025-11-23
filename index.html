@@ -80,12 +80,6 @@
     margin-bottom: 20px;
   }
 
-  #dogPhoto {
-    max-width: 100%;
-    border-radius: 18px;
-    display: none;
-  }
-
   @media (max-width: 600px) {
     #messageBox {
       max-width: 95%;
@@ -111,9 +105,8 @@
 <div id="overlay">
   <div id="messageBox">
     <div id="messageText"></div>
-    <img id="dogPhoto" src="https://images.pexels.com/photos/16191635/pexels-photo-16191635.jpeg" alt="Cute Dog">
     <div class="btn-group">
-      <button id="yesBtn" onclick="showDog()">Yes</button>
+      <button id="yesBtn" onclick="sayYes()">Yes</button>
       <button id="noBtn" onclick="sayNo()">No</button>
     </div>
   </div>
@@ -167,20 +160,17 @@ function showChoice(){
   document.getElementById("noBtn").style.display = "inline-block";
 }
 
-function showDog(){
-  // Hide text and buttons
-  document.getElementById("messageText").style.display = "none";
+function sayYes(){
+  document.getElementById("messageText").innerHTML = "I would not let you down, hehehe";
   document.getElementById("yesBtn").style.display = "none";
   document.getElementById("noBtn").style.display = "none";
-  // Show dog photo
-  document.getElementById("dogPhoto").style.display = "block";
 }
 
 function sayNo(){
   const box = document.getElementById("messageBox");
   box.innerHTML = `<h1>No worries ❤️</h1>
                    <p style="color:#555; font-size:17px; line-height:1.6;">
-                     I'll wait for you and will love you padin bebe.<br><br>
+                     I’ll still love you as much as I can.<br><br>
                    </p>`;
   setTimeout(()=>{document.body.style.opacity="0";},5000);
 }
