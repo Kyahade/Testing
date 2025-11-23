@@ -1,155 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>For You ❤️</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forever Partner ❤️</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #fde1e6, #fff6f7);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #fde1e6, #fff6f7);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  .card {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    text-align: center;
+    animation: fadeIn 0.8s ease;
+  }
 
-    .card {
-      background: white;
-      width: 90%;
-      max-width: 380px;
-      padding: 28px;
-      border-radius: 22px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      text-align: center;
-      animation: fadeIn 0.8s ease;
-    }
+  h1 { color: #ff6b81; font-size: 28px; margin-bottom: 12px; }
+  p { color: #555; font-size: 17px; margin-bottom: 22px; }
 
-    h1 {
-      color: #ff6b81;
-      font-size: 26px;
-      margin-bottom: 10px;
-    }
+  .btn-group { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+  button {
+    padding: 14px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  #yesBtn { background-color: #ff7b94; color: white; }
+  #yesBtn:hover { background-color: #ff506f; }
+  #noBtn { background-color: #e0e0e0; color: #444; }
+  #noBtn:hover { background-color: #c9c9c9; }
 
-    p {
-      color: #555;
-      font-size: 16px;
-      margin-bottom: 22px;
-    }
+  /* Overlay */
+  #overlay {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(255,240,243,0.96);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  #overlay.show { display: flex; }
 
-    .btn-group {
-      display: flex;
-      justify-content: center;
-      gap: 18px;
-    }
-
-    button {
-      padding: 12px 22px;
-      font-size: 16px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    #yesBtn {
-      background-color: #ff7b94;
-      color: white;
-    }
-
-    #yesBtn:hover {
-      background-color: #ff506f;
-    }
-
-    #noBtn {
-      background-color: #e0e0e0;
-      color: #444;
-    }
-
-    #noBtn:hover {
-      background-color: #c9c9c9;
-    }
-
-    /* OVERLAY FIXED FOR MOBILE */
-    /* OVERLAY FIXED FOR MOBILE - CENTERED */
-#overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 240, 243, 0.97);
-  display: none;
-  justify-content: center;
-  align-items: center; /* vertical center */
-  padding: 15px;
-  box-sizing: border-box;
-  overflow: hidden; /* main overlay hidden, box scrolls */
-}
-
-/* Show overlay */
-#overlay.show {
-  display: flex;
-}
-
-/* Message box */
-#messageBox {
-  background: white;
-  width: 100%;
-  max-width: 600px;
-  max-height: 90vh; /* so it fits mobile screens */
-  padding: 22px 18px;
-  border-radius: 18px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-  animation: fadeIn 0.6s ease;
-  overflow-y: auto; /* scroll inside box if too tall */
-  box-sizing: border-box;
-}
-
-#messageText {
-  font-size: 17px;
-  line-height: 1.7;
-  color: #444;
-  white-space: normal;
-}
-
-/* Mobile tweaks */
-@media (max-width: 600px) {
   #messageBox {
-    max-width: 95%;
-    max-height: 85vh;
-    padding: 18px 14px;
+    background: white;
+    width: 100%;
+    max-width: 700px;      /* Big on desktop */
+    max-height: 90vh;      /* Scroll if too tall */
+    padding: 28px 22px;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    overflow-y: auto;
+    box-sizing: border-box;
   }
 
   #messageText {
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: 17px;
+    line-height: 1.7;
+    color: #444;
+    white-space: normal;
   }
-    }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.97); }
-      to { opacity: 1; transform: scale(1); }
+  @media (max-width: 600px) {
+    #messageBox {
+      max-width: 95%;
+      max-height: 85vh;
+      padding: 20px 16px;
     }
-  </style>
+    #messageText { font-size: 16px; line-height: 1.6; }
+    .card { width: 95%; max-width: 380px; padding: 22px; }
+  }
+
+  @keyframes fadeIn { from{opacity:0; transform:scale(0.97);} to{opacity:1; transform:scale(1);} }
+</style>
 </head>
-
 <body>
 
   <div class="card" id="mainCard">
     <h1>Can I ask you something? 🩷</h1>
     <p>Do you want to be my forever partner?</p>
-
     <div class="btn-group">
       <button id="yesBtn" onclick="sayYes()">Yes</button>
       <button id="noBtn" onclick="sayNo()">No</button>
     </div>
   </div>
 
-  <!-- Overlay -->
   <div id="overlay">
     <div id="messageBox">
       <div id="messageText"></div>
@@ -157,7 +107,7 @@
   </div>
 
 <script>
-  const longMessage = `Hey love,
+const longMessage = `Hey love,
 
 I’ve been trying to find the perfect way to express how I feel, and somehow nothing ever feels enough. But here’s what I want you to know…
 
@@ -171,42 +121,36 @@ So… this is me choosing you.
 
 — [Your Name]`;
 
-  // Typewriter Effect
-  function typeWriterEffect(text, elementId, speed = 27) {
-    let i = 0;
-    const element = document.getElementById(elementId);
-    element.innerHTML = "";
-
-    function type() {
-      if (i < text.length) {
-        element.innerHTML += text[i] === "\n" ? "<br>" : text[i];
-        i++;
-        setTimeout(type, speed);
-      }
+// Typewriter effect
+function typeWriterEffect(text, elementId, speed=27) {
+  let i = 0;
+  const element = document.getElementById(elementId);
+  element.innerHTML = "";
+  function type() {
+    if(i<text.length){
+      element.innerHTML += text[i]==="\n" ? "<br>" : text[i];
+      i++;
+      setTimeout(type, speed);
     }
-    type();
   }
+  type();
+}
 
-  function sayYes() {
-    document.getElementById("overlay").classList.add("show");
-    typeWriterEffect(longMessage, "messageText");
-  }
+function sayYes() {
+  document.getElementById("overlay").classList.add("show");
+  typeWriterEffect(longMessage,"messageText");
+}
 
-  function sayNo() {
-    const mainCard = document.getElementById("mainCard");
-    mainCard.innerHTML = `
-      <h1>Oh… I understand ❤️</h1>
-      <p style="color:#666;margin-top:8px">
-        No worries, I’ll still love you as much as I can.  
-        <br><br>
-        Closing in 5 seconds…
-      </p>
-    `;
-
-    setTimeout(() => {
-      document.body.style.opacity = "0";
-    }, 5000);
-  }
+function sayNo() {
+  document.getElementById("overlay").classList.add("show");
+  const box = document.getElementById("messageBox");
+  box.innerHTML = `<h1>No worries ❤️</h1>
+                   <p style="color:#555; font-size:17px; line-height:1.6;">
+                     I’ll still love you as much as I can.<br><br>
+                     Closing in 5 seconds...
+                   </p>`;
+  setTimeout(()=>{document.body.style.opacity="0";},5000);
+}
 </script>
 
 </body>
