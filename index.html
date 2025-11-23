@@ -30,7 +30,7 @@
   h1 { color: #ff6b81; font-size: 28px; margin-bottom: 12px; }
   p { color: #555; font-size: 17px; margin-bottom: 22px; }
 
-  .btn-group { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+  .btn-group { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
   button {
     padding: 14px 24px;
     font-size: 16px;
@@ -39,9 +39,11 @@
     cursor: pointer;
     transition: 0.2s ease;
   }
-  #yesBtn { background-color: #ff7b94; color: white; }
+  #startBtn { background-color: #ff7b94; color: white; }
+  #startBtn:hover { background-color: #ff506f; }
+  #yesBtn { background-color: #ff7b94; color: white; display: none; }
   #yesBtn:hover { background-color: #ff506f; }
-  #noBtn { background-color: #e0e0e0; color: #444; }
+  #noBtn { background-color: #e0e0e0; color: #444; display: none; }
   #noBtn:hover { background-color: #c9c9c9; }
 
   /* Overlay */
@@ -67,6 +69,7 @@
     box-shadow: 0 12px 30px rgba(0,0,0,0.15);
     overflow-y: auto;
     box-sizing: border-box;
+    text-align: left;
   }
 
   #messageText {
@@ -92,17 +95,19 @@
 <body>
 
 <div class="card" id="mainCard">
-  <h1>Can I ask you something? 🩷</h1>
-  <p>Do you want to be my forever partner?</p>
+  <h1>Hey… want to see something? 🩷</h1>
   <div class="btn-group">
-    <button id="yesBtn" onclick="sayYes()">Yes</button>
-    <button id="noBtn" onclick="sayNo()">No</button>
+    <button id="startBtn" onclick="startMessage()">What does this button do?</button>
   </div>
 </div>
 
 <div id="overlay">
   <div id="messageBox">
     <div id="messageText"></div>
+    <div class="btn-group">
+      <button id="yesBtn" onclick="sayYes()">Yes</button>
+      <button id="noBtn" onclick="sayNo()">No</button>
+    </div>
   </div>
 </div>
 
@@ -123,28 +128,46 @@ Because you, and only you, are worth every risk, every heartbeat, every moment I
 
 — [Your Name]`;
 
-// Typewriter effect
-function typeWriterEffect(text, elementId, speed=27) {
+function typeWriterEffect(text, elementId, callback, speed=27){
   let i = 0;
   const element = document.getElementById(elementId);
   element.innerHTML = "";
   function type() {
-    if(i<text.length){
+    if(i < text.length){
       element.innerHTML += text[i]==="\n" ? "<br>" : text[i];
       i++;
       setTimeout(type, speed);
+    } else if(callback){
+      callback();
     }
   }
   type();
 }
 
-function sayYes() {
+// Step 1: Start message
+function startMessage(){
   document.getElementById("overlay").classList.add("show");
+  document.getElementById("startBtn").style.display = "none";
+  typeWriterEffect("Here… read this carefully:", "messageText", ()=>{
+    // After short pause, show long message
+    setTimeout(()=>{ typeWriterEffect(longMessage,"messageText", showChoice); }, 500);
+  });
+}
+
+// Step 2: Show YES/NO buttons
+function showChoice(){
+  document.getElementById("yesBtn").style.display = "inline-block";
+  document.getElementById("noBtn").style.display = "inline-block";
+}
+
+// Step 3: YES
+function sayYes(){
+  document.getElementById("messageText").innerHTML = "";
   typeWriterEffect(longMessage,"messageText");
 }
 
-function sayNo() {
-  document.getElementById("overlay").classList.add("show");
+// Step 4: NO
+function sayNo(){
   const box = document.getElementById("messageBox");
   box.innerHTML = `<h1>No worries ❤️</h1>
                    <p style="color:#555; font-size:17px; line-height:1.6;">
