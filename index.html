@@ -3,177 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You ❤️</title>
+<title>Love Letter</title>
+
 <style>
   body {
     margin: 0;
-    padding: 0;
-    font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #fde1e6, #fff6f7);
-    min-height: 100vh;
+    height: 100vh;
+    background: #ffffff; /* initial white background */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: background 1s ease; /* smooth background transition */
+  }
+
+  .center-stack {
+    position: relative;
+    width: min(300px, 80vw);
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .card {
-    background: white;
-    width: 90%;
-    max-width: 500px;
-    padding: 30px;
-    border-radius: 25px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-    text-align: center;
-    animation: fadeIn 0.8s ease;
-  }
-
-  h1 { color: #ff6b81; font-size: 28px; margin-bottom: 12px; }
-  p { color: #555; font-size: 17px; margin-bottom: 22px; }
-
-  .btn-group { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
-  button {
-    padding: 14px 24px;
-    font-size: 16px;
-    border: none;
-    border-radius: 14px;
-    cursor: pointer;
-    transition: 0.2s ease;
-  }
-  #startBtn { background-color: #ff7b94; color: white; }
-  #startBtn:hover { background-color: #ff506f; }
-  #yesBtn { background-color: #ff7b94; color: white; display: none; }
-  #yesBtn:hover { background-color: #ff506f; }
-  #noBtn { background-color: #e0e0e0; color: #444; display: none; }
-  #noBtn:hover { background-color: #c9c9c9; }
-
-  /* Overlay */
-  #overlay {
-    position: fixed;
-    top:0; left:0; width:100%; height:100%;
-    background: rgba(255,240,243,0.96);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  #overlay.show { display: flex; }
-
-  #messageBox {
-    background: white;
+  /* ENVELOPE */
+  .envelope-container {
+    position: absolute;
     width: 100%;
-    max-width: 700px;
-    max-height: 90vh;
-    padding: 28px 22px;
-    border-radius: 20px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    overflow-y: auto;
-    box-sizing: border-box;
-    text-align: center;
+    height: calc(min(300px, 80vw) * 0.66);
+    cursor: pointer;
+    perspective: 600px;
+    z-index: 5;
   }
 
-  #messageText {
-    font-size: 17px;
-    line-height: 1.7;
-    color: #444;
-    white-space: normal;
-    margin-bottom: 20px;
+  .envelope-body {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ffb6c1; /* pink envelope */
+    border: 2px solid #ffb6c1;
+    border-radius: 5px;
+    transition: opacity 0.5s ease 0.7s;
   }
 
-  @media (max-width: 600px) {
-    #messageBox {
-      max-width: 95%;
-      max-height: 85vh;
-      padding: 20px 16px;
-    }
-    #messageText { font-size: 16px; line-height: 1.6; }
-    .card { width: 95%; max-width: 380px; padding: 22px; }
+  .envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 50% solid transparent;
+    border-right: 50% solid transparent;
+    border-top: 50% solid #ffb6c1;
+    transform-origin: top center;
+    transition: transform 0.7s ease, opacity 0.5s ease 0.7s;
+    z-index: 3;
   }
 
-  @keyframes fadeIn { from{opacity:0; transform:scale(0.97);} to{opacity:1; transform:scale(1);} }
+  .envelope-flap::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -50%;
+    width: 0;
+    height: 0;
+    border-left: calc(50% + 2px) solid transparent;
+    border-right: calc(50% + 2px) solid transparent;
+    border-top: calc(50% + 2px) solid #ffb6c1;
+    z-index: -1;
+  }
+
+  .heart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 20%);
+    font-size: 2rem;
+    transition: opacity 0.5s ease 0.7s;
+  }
+
+  /* PAPER */
+  .paper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(300px, 90vw);
+    background: #ffffff; /* paper stays white */
+    border: 2px solid #cccccc;
+    border-radius: 5px;
+    padding: 20px;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    transition: opacity 1s ease;
+    text-align: left;
+    color: #000000;
+    white-space: pre-line;
+    line-height: 1.6;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .open .envelope-flap {
+    transform: rotateX(-180deg);
+    opacity: 0;
+  }
+
+  .open .envelope-body {
+    opacity: 0;
+  }
+
+  .open .heart {
+    opacity: 0;
+  }
+
+  .show-paper {
+    opacity: 1 !important;
+  }
 </style>
+
 </head>
 <body>
 
-<div class="card" id="mainCard">
-  <h1>Hey… want to see something? 🩷</h1>
-  <div class="btn-group">
-    <button id="startBtn" onclick="startMessage()">What does this button do?</button>
-  </div>
-</div>
+<div class="center-stack">
 
-<div id="overlay">
-  <div id="messageBox">
-    <div id="messageText"></div>
-    <div class="btn-group">
-      <button id="yesBtn" onclick="sayYes()">Yes</button>
-      <button id="noBtn" onclick="sayNo()">No</button>
-    </div>
+  <!-- Envelope -->
+  <div class="envelope-container" id="envelope">
+    <div class="envelope-body"></div>
+    <div class="envelope-flap"></div>
+    <div class="heart">❤️</div>
   </div>
+
+  <!-- Paper -->
+  <div class="paper" id="paper">
+Hi Love!
+
+It's been a week na pala since we started talking, buti na lang talaga nagpapansin ako sayo nun — HAHAHAHA. To be honest, it feels like I've known you for years, and my soul feels like it’s been with you ever since.
+
+Ever since the day we first met, I always wished to be with you kahit saglit lang, kasi you make me warm and happy. I always want to see those beautiful eyes of yours and your sweet smile.
+
+Love, I want to have more days, more weeks, and hopefully years and years with you, because you are the only right person for me. I would do anything for you — I’d climb mountains and swim oceans just to be with you.
+
+I love you, and I hope you know that. I really, really love you so, so, sooo much.
+
+I'll be forever yours,  
+Darryl
+  </div>
+
 </div>
 
 <script>
-const longMessage = `Hey baby,
+const envelope = document.getElementById("envelope");
+const paper = document.getElementById("paper");
 
-I know it’s only been a few days, but I couldn’t wait any longer to tell you what’s in my heart. I wanted to say this to you in person yesterday, but I realized some feelings are too important to wait.
+envelope.addEventListener("click", () => {
+  envelope.classList.add("open");
 
-Can I court you?
-
-I want to know every part of you—the laughter you hide, the dreams you whisper, the little things that make your heart skip. I want to be there for the quiet moments, the messy moments, the moments only you know exist. Every time I think of you, I feel something I can’t quite explain… like my world becomes brighter, warmer, softer, and somehow safer.
-
-If you say yes, I promise to give you everything I have. I’ll take the risk, I’ll give my all, and I’ll cherish every piece of you. Someday, I hope I can be your boyfriend… and if the world lets me, your husband. I want to give you the world, not because I have to, but because loving you makes me want to give everything back to you.
-
-Just like from the movie 50 First Dates, “Being with you is the only way I could have a full and happy life.” — that’s how important you are to me.
-
-And baby… I don’t want to be a hero. Heroes save the world. I want to be a villain—because I would choose saving *you* over saving the entire world.
-
-Because you, and only you, are worth every risk, every heartbeat, every moment I have.
-
-— Darryl`;
-
-function typeWriterEffect(text, elementId, callback, speed=27){
-  let i = 0;
-  const element = document.getElementById(elementId);
-  element.innerHTML = "";
-  function type() {
-    if(i < text.length){
-      element.innerHTML += text[i]==="\n" ? "<br>" : text[i];
-      i++;
-      setTimeout(type, speed);
-    } else if(callback){
-      callback();
-    }
-  }
-  type();
-}
-
-function startMessage(){
-  document.getElementById("overlay").classList.add("show");
-  document.getElementById("startBtn").style.display = "none";
-  typeWriterEffect("Here… read this carefully:", "messageText", ()=>{
-    setTimeout(()=>{ typeWriterEffect(longMessage,"messageText", showChoice); }, 500);
-  });
-}
-
-function showChoice(){
-  document.getElementById("yesBtn").style.display = "inline-block";
-  document.getElementById("noBtn").style.display = "inline-block";
-}
-
-function sayYes(){
-  document.getElementById("messageText").innerHTML = "I would not let you down, hehehe";
-  document.getElementById("yesBtn").style.display = "none";
-  document.getElementById("noBtn").style.display = "none";
-}
-
-function sayNo(){
-  const box = document.getElementById("messageBox");
-  box.innerHTML = `<h1>No worries ❤️</h1>
-                   <p style="color:#555; font-size:17px; line-height:1.6;">
-                     I’ll still love and wait for you bebe.<br><br>
-                   </p>`;
-  setTimeout(()=>{document.body.style.opacity="0";},5000);
-}
+  setTimeout(() => {
+    paper.classList.add("show-paper");
+    paper.style.pointerEvents = "auto";
+    document.body.style.background = "#ffe6e6"; // background turns pink
+  }, 1200);
+});
 </script>
 
 </body>
